@@ -59,7 +59,7 @@ W = max(W,epsilon);
 clf;
 imageplot(min(W,3));
 p = [140  ;120 ];
-[f1,S] = perform_fast_marching(1./W, p);
+[f1,S,q] = perform_fast_marching(1./W, p);
 f1 = -f1*n;
 clf;
 hold on;

@@ -4,27 +4,16 @@ getd('../lib/toolbox_signal/');
 getd('../lib/toolbox_general/');
 getd('../lib/toolbox_graph/');
 
-%name = '../pic/0_gray_resize';
-name = 'mozart';
+% name = '../pic/0_gray_resize';
+% name = 'mozart';
 name = '../pic/1_gray';
-f = load_image(name)/20;
+f = load_image(name);
 % set all white area into black (which is not like reverse)
-%f(f>200)=0;
-
 n = size(f,1);
 h = n*.4;
 f = rescale(f,0,h);
 clf;
 imageplot(f);
-
-clf;
-surf(f/20);
-colormap(gray(256));
-shading interp;
-axis equal;
-view(110,45);
-axis('off');
-camlight;
 
 
 options.order = 2;
@@ -43,7 +32,6 @@ vmin = .3;
 clf;
 imageplot(max(L,vmin));
 
-exo1;% four ligth direction 
 
 %For a vertical ligthing direction d=(0,0,1) 
 d = [0 0 1];
@@ -64,20 +52,30 @@ ske_name = '../pic/1_gray_ske';
 ske_pic = load_image(ske_name);
 ske=(ske_pic(:,:,1)>150&ske_pic(:,:,2)<100);
 [row,col]=find(ske);
-p=[row(:) col(:)]';
-
-[f1,S] = perform_fast_marching(20./W, p);
-f1 = -f1*n;
+% set p1 on the skeleton 
+pr=[row(:) col(:)]';
+ske=(ske_pic(:,:,3)>100&ske_pic(:,:,1)<150);
+[row,col]=find(ske);
+pb=[row(:) col(:)]';
+% set p2 on the panel  
+p0= [100 100]';
+p= [pr pb p0];
+%set the initial distance value for starting points
+options.values=[ones(size(pr,2),1)*-10;ones(size(pb,2),1)*-9.8;0];
+% options.values=[1:871]'/10;
+[f1,S,q] = perform_fast_marching(1./W, p,options);
+f1 = -f1*n/10;
+% f1(f<10)=Inf;
 clf;
 hold on;
 surf(f1);
-% h = plot3(p(2,:), p(1,:), f1(p(1,:),p(2,:)), 'r.');
+indices = sub2ind(size(f1), p(1,:), p(2,:));
+h = plot3(p(2,:), p(1,:), f1(indices), 'r.');
 % set(h, 'MarkerSize',30);
-colormap(gray(256));
+% colormap(gray(256));
 shading interp;
 axis('equal');
 view(110,45);
 axis('off');
 camlight('headlight') 
-exo2;
-exo3;
+
