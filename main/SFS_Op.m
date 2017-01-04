@@ -32,7 +32,6 @@ vmin = .3;
 clf;
 imageplot(max(L,vmin));
 
-
 %For a vertical ligthing direction d=(0,0,1) 
 d = [0 0 1];
 

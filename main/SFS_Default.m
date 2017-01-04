@@ -73,4 +73,4 @@ view(110,45);
 axis('off');
 camlight('headlight') 
 exo2;
-exo3;
+
