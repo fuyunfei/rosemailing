@@ -6,7 +6,7 @@ getd('../lib/toolbox_graph/');
 
 %name = '../pic/0_gray_resize';
 name = 'mozart';
-%name = '../pic/d-2';
+% name = '../pic/1_gray';
 f = load_image(name);
 n = size(f,1);
 
@@ -18,7 +18,7 @@ clf;
 imageplot(f);
 
 clf;
-surf(f/20);
+surf(f);
 colormap(gray(256));
 shading interp;
 axis equal;
@@ -43,8 +43,6 @@ vmin = .3;
 clf;
 imageplot(max(L,vmin));
 
-exo1;% four ligth direction 
-
 %For a vertical ligthing direction d=(0,0,1) 
 d = [0 0 1];
 
@@ -62,15 +60,14 @@ p = [140  ;120 ];
 [f1,S,q] = perform_fast_marching(1./W, p);
 f1 = -f1*n;
 clf;
-hold on;
+figure;
 surf(f1);
-h = plot3(p(2,:), p(1,:), f1(p(1,:),p(2,:)), 'r.');
-set(h, 'MarkerSize',30);
-%colormap(gray(256));
+% h = plot3(p(2,:), p(1,:), f1(p(1,:),p(2,:)), 'r.');
+% set(h, 'MarkerSize',30);
+colormap(gray(256));
 shading interp;
 axis('equal');
 view(110,45);
 axis('off');
 camlight('headlight') 
-exo2;
 

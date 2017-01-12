@@ -17,12 +17,13 @@ img = im2double(img);
 mask = img<(200/255);
 
 test = padarray(img, [10 10], 'symmetric');
-theta = [-32:31]/64*pi;
+theta = [-64:63]/128*pi;
 parfor i = 1:length(theta)
-   r = gaborkernel2d(test,0,3,theta(i),0,0.5,1);
+   r = gaborkernel2d(test,0,5,theta(i),0,0.5,1);
    gbr(:,:,i) = r(11:end-10,11:end-10);
 end
 [res,orienMatrix] = calc_viewimage(gbr, [1:length(theta)], theta);
+plotquiver(res,orienMatrix);
 figure,imagesc(res);axis image;axis off;colormap(gray);
 conf = confidence(gbr, res, orienMatrix, theta).*mask;
 
@@ -50,12 +51,12 @@ seed = find_seed(orientation,conf1);
 hair = tracing(seed, orientation, conf1, mask);
 
 figure
-y = linspace(0,1,50);
-for i = 1:length(hair)
-%     [~,~,hair1{i}] = CASTELJAU(0,1,hair{i},y);
-    plot(hair{i}(:,2),hair{i}(:,1),'LineWidth', 1.5); axis ij; axis image; hold on
-end
-axis off; hold off
+% y = linspace(0,1,50);
+% for i = 1:length(hair)
+% %     [~,~,hair1{i}] = CASTELJAU(0,1,hair{i},y);
+%     plot(hair{i}(:,2),hair{i}(:,1),'LineWidth', 1.5); axis ij; axis image; hold on
+% end
+% axis off; hold off
 
 hair_length=zeros(1,length(hair));
 for i=1:length(hair)

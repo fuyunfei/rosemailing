@@ -82,8 +82,13 @@ end
 
 result(pneg) = pos*result(pneg);
 result(ppos) = neg*result(ppos);
-
+Img=result; 
+scaledI = (Img-min(Img(:))) ./ (max(Img(:)-min(Img(:))));
+figure;
+imshow(scaledI);
 result1 = convolution(I,result);
+figure;
+imshow(result1);
 
 % figure(5); clf; set(gcf,'Name','Gabor Filtering');
 % subplot(2,2,1); imagesc(I); axis image; colormap(gray);title('Input Image');
