@@ -1,16 +1,17 @@
 clear all, close all; 
-name = '../pic/4.jpg';
-smoothratio=1.5;
+name = '../pic/3.jpg';
+smoothratio=0.5;
 mservar=struct(...
-    'ThresholdDelta',  1.99, ...
-    'RegionAreaRange', [1000 30000], ...
-    'MaxAreaVariation', 0.2);
+    'ThresholdDelta',  0.99, ...
+    'RegionAreaRange', [1500 50000], ...
+    'MaxAreaVariation', 0.5);
 
 I=imread(name);
+I = imresize(I, [5000 5000]);
 if(size(I,3)==3)  
 I=rgb2gray(I);
-rawI = imresize(I,[min(size(I)) min(size(I))]);
-I = imgaussfilt(rawI,smoothratio);
+I = imresize(I,[min(size(I)) min(size(I))]);
+% I = imgaussfilt(I,smoothratio);
 end 
 
 
