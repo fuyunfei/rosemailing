@@ -4,7 +4,7 @@ smoothratio=0.5;
 mservar=struct(...
     'ThresholdDelta',  0.99, ...
     'RegionAreaRange', [1500 50000], ...
-    'MaxAreaVariation', 0.4);
+    'MaxAreaVariation', 0.5);
 
 I=imread(name);
 I = imresize(I, [5000 5000]);
@@ -18,8 +18,8 @@ mserRegions = detectMSERFeatures(I,mservar);
 figure; imshow(I); hold on;
 plot(mserRegions,'showPixelList',true,'showEllipses',false);
 
-SWT(I,mserRegions);
-% save mserRegions
+SWT(I,me)
+save mserRegions
 
 
 
