@@ -82,16 +82,10 @@ end
 
 result(pneg) = pos*result(pneg);
 result(ppos) = neg*result(ppos);
-Img=result; 
-scaledI = (Img-min(Img(:))) ./ (max(Img(:)-min(Img(:))));
-figure;
-imshow(scaledI);
 result1 = convolution(I,result);
-figure;
-imshow(result1);
 
-% figure(5); clf; set(gcf,'Name','Gabor Filtering');
-% subplot(2,2,1); imagesc(I); axis image; colormap(gray);title('Input Image');
-% subplot(2,2,2); imagesc(result1); axis image; colormap(gray);title(['Filtered Image (\theta = ',num2str(theta*(180/pi)),'{\circ})']);
-% subplot(2,1,2); imagesc(result); axis image; colormap(gray);title(['Oriented Filter (\theta = ',num2str(theta*(180/pi)),'{\circ})']);
-% % figure,mesh(x,y,result);
+figure;   set(gcf,'Name','Gabor Filtering');
+subplot(2,2,1); imagesc(I); axis image; colormap(gray);title('Input Image');
+subplot(2,2,2); imagesc(result1); axis image; colormap(gray);title(['Filtered Image (\theta = ',num2str(theta*(180/pi)),'{\circ})']);
+subplot(2,1,2); imagesc(result); axis image; colormap(gray);title(['Oriented Filter (\theta = ',num2str(theta*(180/pi)),'{\circ})']);
+% figure,mesh(x,y,result);

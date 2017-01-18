@@ -107,14 +107,16 @@ bbox = int64(vertcat(mserStats.BoundingBox));
 
 % Process the remaining regions
 
-strokeWidthThreshold=0.5;
-figure;
+strokeWidthThreshold=0.6;
+
 for j = 1:numel(mserStats)
     
     regionImage = mserStats(j).Image;
     regionImage = padarray(regionImage, [1 1], 0);
     
-    distanceImage = bwdist(~regionImage);
+  distanceImage = bwdist(~regionImage);
+%     b=I( bbox(j,2):(bbox(j,2)+bbox(j,4))+1, bbox(j,1):(bbox(j,1)+bbox(j,3))+1);
+%     distanceImage = single(regionImage).*single(b);
     skeletonImage = bwmorph(regionImage, 'thin', inf);
     
     strokeWidthValues = distanceImage(skeletonImage);
@@ -126,30 +128,30 @@ for j = 1:numel(mserStats)
     strokeWidthImage = distanceImage;
     strokeWidthImage(~skeletonImage) = 0;
     
-    disp([std(strokeWidthValues),mean(strokeWidthValues),strokeWidthMetric])
+%     disp([std(strokeWidthValues),mean(strokeWidthValues),strokeWidthMetric])
     
-    txt = texlabel(mat2str([std(strokeWidthValues),mean(strokeWidthValues),strokeWidthMetric]));
-    text(3,5,txt);
-    
-    subplot(2,4,1)
-    imagesc(regionImage)
-    title('Region Image')
-
-    subplot(2,4,2)
-    imagesc(distanceImage)
-    title('distanceImage')
-    
-    subplot(2,4,3)
-    imagesc(strokeWidthImage)
-    title('strokeWidthImage')
-
-    subplot(2,4,4)
-    b=I( bbox(j,2):(bbox(j,2)+bbox(j,4)), bbox(j,1):(bbox(j,1)+bbox(j,3)));
-    imagesc(b);
-    
-    subplot(2,4,[5:8]); imshow(I); hold on;
-    plot(mserRegions(j),'showPixelList',true,'showEllipses',false);hold on ;
-    
+%     txt = texlabel(mat2str([std(strokeWidthValues),mean(strokeWidthValues),strokeWidthMetric]));
+%     text(3,5,txt);
+%     
+%     subplot(2,4,1)
+%     imagesc(regionImage)
+%     title('Region Image')
+% 
+%     subplot(2,4,2)
+%     imagesc(distanceImage)
+%     title('distanceImage')
+%     
+%     subplot(2,4,3)
+%     imagesc(strokeWidthImage)
+%     title('strokeWidthImage')
+% 
+%     subplot(2,4,4)
+%     
+%     imagesc(b);
+%     
+%     subplot(2,4,[5:8]); imshow(I); hold on;
+%     plot(mserRegions(j),'showPixelList',true,'showEllipses',false);hold on ;
+%     
     
 end
 
@@ -158,10 +160,23 @@ mserRegions(strokeWidthFilterIdx) = [];
 mserStats(strokeWidthFilterIdx) = [];
 
 % Show remaining regions
-figure
-imshow(I)
-hold on
-plot(mserRegions, 'showPixelList', true,'showEllipses',false)
-title('After Removing Non-Text Regions Based On Stroke Width Variation')
+figure;imshow(I);hold on;
+plot(mserRegions, 'showPixelList', true,'showEllipses',false);
+% title('After Removing Non-Text Regions Based On Stroke Width Variation')
 hold off
+
+
+% for i= 1:size(mserRegions,1)
+% region_idx= mserRegions(i,1).PixelList;
+% idx = sub2ind(size(I),region_idx(:,2),region_idx(:,1));
+% b=zeros(size(I,1),size(I,2));
+% b(idx)=I(idx);
+% % b(idx)=255;
+% % imwrite(b,['../output/regions/', int2str(i) ,'.jpg'])
+% % figure
+% imshow(b,[0,255]);
+% end
+
+
+
 end 

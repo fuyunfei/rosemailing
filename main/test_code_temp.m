@@ -27,6 +27,8 @@ clear;
 clc;
 
 img = imread('../pic/1_gray.jpg');
+rawimg =double(imread('../pic/1.jpg'));
+
 % img = zeros(100);
 % img(45:54,:)=255;
 
@@ -38,11 +40,25 @@ img = im2double(img);
 mask = img<(200/255);
 
 test = padarray(img, [10 10], 'symmetric');
-theta = [-8:7]/16*pi;
-parfor i = 1:length(theta)
-   r = gaborkernel2d(test,0,3,theta(i),0,0.5,1);
+theta = [-16:15]/16*pi;
+for i = 1:length(theta)
+   r = gaborkernel2d(test,0,2,theta(i),1.6,0.3,10);
    gbr(:,:,i) = r(11:end-10,11:end-10);
 end
 [res,orienMatrix] = calc_viewimage(gbr, [1:length(theta)], theta);
 figure,imagesc(res);axis image;axis off;colormap(gray);
-imwrite(res,'res.jpg')
+
+res=res-min(res(:));
+res=res./max(res(:));
+
+res=res>0.3;
+imwrite(res,'res1.jpg');
+
+for i=1:3
+rawimg(:,:,i)=rawimg(:,:,i).*res; 
+end
+rawimg=uint8(rawimg);
+imwrite(rawimg,'res.jpg');
+
+
+

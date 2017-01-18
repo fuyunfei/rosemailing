@@ -13,24 +13,26 @@ img1 = imread(fullfile(pathname, filename));
 if size(img1,3) == 3
     img = rgb2gray(img1);
 end
-img = im2double(img); 
+img = im2double(img);
+img=imresize(img,2);
 mask = img<(200/255);
 
 test = padarray(img, [10 10], 'symmetric');
-theta = [-64:63]/128*pi;
+theta = [-8:8]/16*pi;
 parfor i = 1:length(theta)
-   r = gaborkernel2d(test,0,5,theta(i),0,0.5,1);
+   r = gaborkernel2d(test,0,1,theta(i),0,0.3,10);
    gbr(:,:,i) = r(11:end-10,11:end-10);
 end
 [res,orienMatrix] = calc_viewimage(gbr, [1:length(theta)], theta);
-plotquiver(res,orienMatrix);
+imshow(img); hold on ;
+plotquiver(img,res,orienMatrix);
 figure,imagesc(res);axis image;axis off;colormap(gray);
 conf = confidence(gbr, res, orienMatrix, theta).*mask;
 
 test = padarray(conf, [10 10], 'symmetric');
 %iterative refinement 1st
 parfor i = 1:length(theta)
-   r = gaborkernel2d(test,0,3,theta(i),0,0.5,1);
+   r = gaborkernel2d(test,0,2,theta(i),1.6,0.3,10);
    gbr1(:,:,i) = r(11:end-10,11:end-10);
 end
 [res1,orienMatrix1] = calc_viewimage(gbr1, [1:length(theta)], theta);
@@ -39,7 +41,7 @@ conf1 = confidence(gbr1, res1, orienMatrix1, theta).*mask;
 test = padarray(conf1, [10 10], 'symmetric');
 %%iterative refinement 2nd
 parfor i = 1:length(theta)
-   r = gaborkernel2d(test,0,3,theta(i),0,0.5,1);
+   r = gaborkernel2d(test,0,2,theta(i),1.6,0.3,10);
    gbr2(:,:,i) = r(11:end-10,11:end-10);
 end
 [res2,orienMatrix2] = calc_viewimage(gbr2, [1:length(theta)], theta);
