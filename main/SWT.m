@@ -1,4 +1,4 @@
-function SWT(I,mserRegions)
+function mserRegions=SWT(I,mserRegions)
 %% Step 2: Remove Non-Text Regions Based On Basic Geometric Properties
 % Although the MSER algorithm picks out most of the text, it also detects
 % many other stable regions in the image that are not text. You can use a
@@ -115,7 +115,7 @@ for j = 1:numel(mserStats)
     regionImage = padarray(regionImage, [1 1], 0);
     
   distanceImage = bwdist(~regionImage);
-%     b=I( bbox(j,2):(bbox(j,2)+bbox(j,4))+1, bbox(j,1):(bbox(j,1)+bbox(j,3))+1);
+ 
 %     distanceImage = single(regionImage).*single(b);
     skeletonImage = bwmorph(regionImage, 'thin', inf);
     
@@ -128,11 +128,12 @@ for j = 1:numel(mserStats)
     strokeWidthImage = distanceImage;
     strokeWidthImage(~skeletonImage) = 0;
     
-%     disp([std(strokeWidthValues),mean(strokeWidthValues),strokeWidthMetric])
+    disp([std(strokeWidthValues),mean(strokeWidthValues),strokeWidthMetric])
     
-%     txt = texlabel(mat2str([std(strokeWidthValues),mean(strokeWidthValues),strokeWidthMetric]));
-%     text(3,5,txt);
-%     
+    txt = texlabel(mat2str([std(strokeWidthValues),mean(strokeWidthValues),strokeWidthMetric]));
+    text(3,5,txt);
+    
+%     b=I( bbox(j,2):(bbox(j,2)+bbox(j,4))+1, bbox(j,1):(bbox(j,1)+bbox(j,3))+1);
 %     subplot(2,4,1)
 %     imagesc(regionImage)
 %     title('Region Image')
@@ -146,7 +147,6 @@ for j = 1:numel(mserStats)
 %     title('strokeWidthImage')
 % 
 %     subplot(2,4,4)
-%     
 %     imagesc(b);
 %     
 %     subplot(2,4,[5:8]); imshow(I); hold on;

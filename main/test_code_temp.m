@@ -38,15 +38,35 @@ if size(img,3) == 3
 end
 img = im2double(img); 
 mask = img<(200/255);
+for j=1:8
+    scaleratio=0.2+0.1*j;
+    s_I = imresize(img,scaleratio);
+    test = padarray(s_I, [10 10], 'symmetric');
+    theta = [-8:7]/16*pi;
+    for i = 1:length(theta)
+       r = gaborkernel2d(test,0,3,theta(i),0,0.5,1);
+       gbr(:,:,i) = r(11:end-10,11:end-10);
+    end
 
-test = padarray(img, [10 10], 'symmetric');
-theta = [-16:15]/16*pi;
-for i = 1:length(theta)
-   r = gaborkernel2d(test,0,2,theta(i),1.6,0.3,10);
-   gbr(:,:,i) = r(11:end-10,11:end-10);
+    
+    [res,orienMatrix] = calc_viewimage(gbr, [1:length(theta)], theta);
+    res=imresize(res,size(img));
+    orienMatrix=imresize(orienMatrix,size(img));
+    list_res(:,:,j)=res;
+    list_or(:,:,j)=orienMatrix;
+    
+    gbr=[];
+%     figure,imagesc(res);axis image;axis off;colormap(gray);
 end
-[res,orienMatrix] = calc_viewimage(gbr, [1:length(theta)], theta);
-figure,imagesc(res);axis image;axis off;colormap(gray);
+
+[M,I]=min(list_res,[],3);
+
+% for i= 1:size(list_res_or,1)
+%     tem= list_res_or{1,i}-list_res_or{1,i+1};
+%     select=tem>0;
+%     list_res_or{1,i}*select+list_res_or{1,i+1}
+% end
+
 
 res=res-min(res(:));
 res=res./max(res(:));
@@ -59,6 +79,30 @@ rawimg(:,:,i)=rawimg(:,:,i).*res;
 end
 rawimg=uint8(rawimg);
 imwrite(rawimg,'res.jpg');
+
+%% test for multi-scale
+clear all, close all; 
+name = '../pic/1.jpg';
+smoothratio=2;
+scaleratio=0.5;
+I=imread(name);
+if(size(I,3)==3)  
+I=rgb2gray(I);
+end 
+
+for i = 1:5
+    scaleratio=0.5+0.1*i;
+    s_I = imresize(I,scaleratio);
+    figure; imshow(s_I);
+end
+
+
+
+
+
+
+
+
 
 
 
