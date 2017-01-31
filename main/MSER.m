@@ -1,5 +1,5 @@
 clear all, close all; 
-name = '../pic/9.jpg';
+name = '../pic/1.jpg';
 smoothratio=1;
 scaleratio=2;
 I=imread(name);
@@ -16,7 +16,7 @@ Is = imguidedfilter(I);
 sz=size(I,1)*size(I,2);
 mservar=struct(...
     'ThresholdDelta',  0.99, ...
-    'RegionAreaRange', [int64(sz*0.001) int64(sz*0.1)], ...
+    'RegionAreaRange', [int64(sz*0.0002) int64(sz*0.1)], ...
     'MaxAreaVariation', 0.1);
 % [G,~]=imgradient(I);
 mserRegions = detectMSERFeatures(Is,mservar);

@@ -1,4 +1,19 @@
-clear all; close all ; 
+clear all; close all ;
+getd = @(p)path(p,path);
+getd('../lib/toolbox_signal/');
+getd('../lib/toolbox_general/');
+getd('../lib/toolbox_graph/');
+getd('../lib/Tubeplot/');
+
+%% 
+t=0:(2*pi/100):(2*pi);
+x=cos(t*2).*(2+sin(t*3)*.3);
+y=sin(t*2).*(2+sin(t*3)*.3);
+z=cos(t*3)*.3;
+tubeplot(x,y,z,0.1,t,25)
+axis equal;
+
+%% 
 % % a=1:25;
 % % a=reshape(a,[5,5]); 
 % a=ones(5,5)*0.1;
@@ -95,9 +110,6 @@ for i = 1:5
     s_I = imresize(I,scaleratio);
     figure; imshow(s_I);
 end
-
-
-
 
 
 

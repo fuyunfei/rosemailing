@@ -133,24 +133,24 @@ for j = 1:numel(mserStats)
     txt = texlabel(mat2str([std(strokeWidthValues),mean(strokeWidthValues),strokeWidthMetric]));
     text(3,5,txt);
     
-%     b=I( bbox(j,2):(bbox(j,2)+bbox(j,4))+1, bbox(j,1):(bbox(j,1)+bbox(j,3))+1);
-%     subplot(2,4,1)
-%     imagesc(regionImage)
-%     title('Region Image')
-% 
-%     subplot(2,4,2)
-%     imagesc(distanceImage)
-%     title('distanceImage')
-%     
-%     subplot(2,4,3)
-%     imagesc(strokeWidthImage)
-%     title('strokeWidthImage')
-% 
-%     subplot(2,4,4)
-%     imagesc(b);
-%     
-%     subplot(2,4,[5:8]); imshow(I); hold on;
-%     plot(mserRegions(j),'showPixelList',true,'showEllipses',false);hold on ;
+    b=I( bbox(j,2):(bbox(j,2)+bbox(j,4))+1, bbox(j,1):(bbox(j,1)+bbox(j,3))+1);
+    subplot(2,4,1)
+    imagesc(regionImage)
+    title('Region Image')
+
+    subplot(2,4,2)
+    imagesc(distanceImage)
+    title('distanceImage')
+    
+    subplot(2,4,3)
+    imagesc(strokeWidthImage)
+    title('strokeWidthImage')
+
+    subplot(2,4,4)
+    imagesc(b);
+    
+    subplot(2,4,[5:8]); imshow(I); hold on;
+    plot(mserRegions(j),'showPixelList',true,'showEllipses',false);hold on ;
 %     
     
 end
