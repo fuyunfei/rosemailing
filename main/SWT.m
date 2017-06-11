@@ -38,7 +38,7 @@ mserConnComp.PixelIdxList = pixelIdxList;
 
 % Use regionprops to measure MSER properties
 mserStats = regionprops(mserConnComp, 'BoundingBox', 'Eccentricity', ...
-    'Solidity', 'Extent', 'Euler', 'Image');
+    'Solidity', 'Extent', 'Euler', 'Image','Extrema','perimeter');
 
 % % Compute the aspect ratio using bounding box data.
 bbox = int64(vertcat(mserStats.BoundingBox));
@@ -107,7 +107,7 @@ bbox = int64(vertcat(mserStats.BoundingBox));
 
 % Process the remaining regions
 
-strokeWidthThreshold=0.6;
+strokeWidthThreshold=0.5;
 
 for j = 1:numel(mserStats)
     
@@ -116,8 +116,8 @@ for j = 1:numel(mserStats)
     
   distanceImage = bwdist(~regionImage);
  
-%     distanceImage = single(regionImage).*single(b);
-    skeletonImage = bwmorph(regionImage, 'thin', inf);
+%   distanceImage = single(regionImage).*single(b);
+    skeletonImage = bwmorph(regionImage, 'skel', inf);
     
     strokeWidthValues = distanceImage(skeletonImage);
     
@@ -151,7 +151,6 @@ for j = 1:numel(mserStats)
     
     subplot(2,4,[5:8]); imshow(I); hold on;
     plot(mserRegions(j),'showPixelList',true,'showEllipses',false);hold on ;
-%     
     
 end
 
